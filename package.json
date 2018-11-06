@@ -1,0 +1,24 @@
+{
+	"name": "pixl-acl",
+	"version": "1.0.0",
+	"description": "A simple but fast implementation of IPv4 and IPv6 ACL filtering.",
+	"author": "Joseph Huckaby <jhuckaby@gmail.com>",
+	"homepage": "https://github.com/jhuckaby/pixl-acl",
+	"license": "MIT",
+	"main": "acl.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jhuckaby/pixl-acl"
+	},
+	"bugs": {
+		"url": "https://github.com/jhuckaby/pixl-acl/issues"
+	},
+	"keywords": [
+		"acl",
+		"ipv4",
+		"ipv6"
+	],
+	"dependencies": {
+		"ipaddr.js": "1.8.1"
+	}
+}
