@@ -57,20 +57,28 @@ module.exports = class ACL {
 		
 		for (var idx = 0, len = ips.length; idx < len; idx++) {
 			var ip = ips[idx];
-			var addr = ipaddr.process( ip ); // process() converts IPv6-wrapped-IPv4 back to IPv4
-			var contains = false;
-			var ranges = (addr.kind() == 'ipv4') ? this.ipv4s : this.ipv6s;
-			
-			if (ranges.length) {
-				for (var idy = 0, ley = ranges.length; idy < ley; idy++) {
-					if (addr.match(ranges[idy])) {
-						contains = true;
-						idy = ley;
-					}
-				} // foreach range
+			var addr = null;
+			try {
+				addr = ipaddr.process( ip ); // process() converts IPv6-wrapped-IPv4 back to IPv4
 			}
-			
-			if (contains) count++;
+			catch (err) {
+				addr = null;
+			}
+			if (addr) {
+				var contains = false;
+				var ranges = (addr.kind() == 'ipv4') ? this.ipv4s : this.ipv6s;
+				
+				if (ranges.length) {
+					for (var idy = 0, ley = ranges.length; idy < ley; idy++) {
+						if (addr.match(ranges[idy])) {
+							contains = true;
+							idy = ley;
+						}
+					} // foreach range
+				}
+				
+				if (contains) count++;
+			}
 		} // foreach ip
 		
 		return count;

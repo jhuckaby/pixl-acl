@@ -1,6 +1,6 @@
 {
 	"name": "pixl-acl",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "A simple but fast implementation of IPv4 and IPv6 ACL filtering.",
 	"author": "Joseph Huckaby <jhuckaby@gmail.com>",
 	"homepage": "https://github.com/jhuckaby/pixl-acl",
