@@ -13,14 +13,14 @@ npm install pixl-acl
 Then use `require()` to load it in your code:
 
 ```js
-var ACL = require('pixl-acl');
+const ACL = require('pixl-acl');
 ```
 
 To use the module, instantiate an object, and specify one or more IPv4 or IPv6 addresses or ranges (you can mix/match the two):
 
 ```js
-var acl = new ACL( "10.0.0.0/8" );
-var acl = new ACL([ "10.11.12.13", "fd00::/8" ]);
+let acl = new ACL( "10.0.0.0/8" );
+let acl = new ACL([ "10.11.12.13", "fd00::/8" ]);
 ```
 
 You can optionally add addresses or ranges after construction using `add()`:
@@ -37,6 +37,12 @@ acl.add( "10." );        // expands to: 10.0.0.0/8
 acl.add( "192.168" );    // expands to: 192.168.0.0/16
 acl.add( "2001:db8::" ); // expands to: 2001:db8:0:0:0:0:0:0/32
 acl.add( "::1" );        // expands to: 0:0:0:0:0:0:0:1/128
+```
+
+IP ranges are also accepted.  Make sure they are separated by a dash (and zero or more spaces):
+
+```js
+acl.add( "8.12.144.0 - 8.12.144.255" );
 ```
 
 ## Matching IP Addresses
@@ -72,7 +78,7 @@ You can pass IPv4 and/or IPv6 addresses to all methods, including a mix of the t
 To create an ACL consisting of all the [IPv4](https://en.wikipedia.org/wiki/Private_network#Private_IPv4_addresses) and [IPv6](https://en.wikipedia.org/wiki/Private_network#Private_IPv6_addresses) private address ranges, including the [localhost loopback](https://en.wikipedia.org/wiki/Localhost#Loopback) addresses (both IPv4 and IPv6 versions), and [link-local addresses](https://en.wikipedia.org/wiki/Link-local_address) (both IPv4 and IPv6 versions) you can use the following set of [CIDR blocks](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing):
 
 ```js
-var acl = new ACL([ "::1/128", "127.0.0.1/32", "169.254.0.0/16", "fe80::/10", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "fd00::/8" ]);
+let acl = new ACL([ "::1/128", "127.0.0.1/32", "169.254.0.0/16", "fe80::/10", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "fd00::/8" ]);
 ```
 
 # Handling Proxy Chains
@@ -95,7 +101,7 @@ When receiving incoming HTTP requests for a web application, you should consider
 
 **The MIT License (MIT)**
 
-*Copyright (c) 2018 Joseph Huckaby.*
+*Copyright (c) 2018 - 2023 Joseph Huckaby.*
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
