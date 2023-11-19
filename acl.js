@@ -124,50 +124,43 @@ module.exports = class ACL {
 // Internal Utility Functions:
 
 function ipToInteger(ip) {
-    return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet, 10), 0);
+	return ip.split('.').reduce((acc, octet) => acc * 256 + parseInt(octet, 10), 0) >>> 0;
 }
 
 function integerToIP(int) {
-    return [int >>> 24, int >> 16 & 255, int >> 8 & 255, int & 255].join('.');
+	return [int >>> 24, int >> 16 & 255, int >> 8 & 255, int & 255].join('.');
 }
 
 function rangeToCIDR(startIP, endIP) {
-    const start = ipToInteger(startIP);
-    const end = ipToInteger(endIP);
-    const range = end - start + 1;
-    const bits = Math.floor(Math.log2(range));
-    const mask = 32 - bits;
-    const cidr = integerToIP(start & (0xFFFFFFFF << bits)) + '/' + mask;
-    return cidr;
+	const start = ipToInteger(startIP);
+	const end = ipToInteger(endIP);
+	const range = end - start + 1;
+	const bits = Math.floor(Math.log2(range));
+	const mask = 32 - bits;
+	const cidr = integerToIP(start & (0xFFFFFFFF << bits)) + '/' + mask;
+	return cidr;
 }
 
 function ipv6ToBigInt(ipv6) {
-    const sections = ipv6.split(':').map(section => parseInt(section, 16));
-    return sections.reduce((acc, section) => acc * 65536n + BigInt(section), 0n);
+	const sections = ipv6.split(':').map(section => parseInt(section, 16));
+	return sections.reduce((acc, section) => acc * 65536n + BigInt(section), 0n);
 }
 
 function bigIntToIPv6(bigInt) {
-    const parts = [];
-    for (let i = 0; i < 8; i++) {
-        parts.unshift((bigInt & 0xffffn).toString(16));
-        bigInt >>= 16n;
-    }
-    return parts.join(':');
+	const parts = [];
+	for (let i = 0; i < 8; i++) {
+		parts.unshift((bigInt & 0xffffn).toString(16));
+		bigInt >>= 16n;
+	}
+	return parts.join(':');
 }
 
 function rangeToCIDRv6(startIP, endIP) {
-    const start = ipv6ToBigInt(startIP);
-    const end = ipv6ToBigInt(endIP);
-    const range = end - start + 1n;
-    const bits = BigInt(Math.floor(Math.log2(Number(range))));
-    const mask = 128n - bits;
-    let cidr = bigIntToIPv6(start & (0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFn << bits)) + '/' + mask;
-	
-	// Replace consecutive groups of zeros with '::'
-	cidr = cidr.replace(/(?:0(?::0)+)(?::(?:0(?::0)*)?)/, '::');
-	
-	// Remove leading zeros
-	cidr = cidr.replace(/(?:^|:)0+(?=[0-9a-f])/g, ':');
-	
-    return cidr.replace(/::/, ':');
+	const start = ipv6ToBigInt(startIP);
+	const end = ipv6ToBigInt(endIP);
+	const range = end - start + 1n;
+	const bits = BigInt(Math.floor(Math.log2(Number(range))));
+	const mask = 128n - bits;
+	let cidr = bigIntToIPv6(start & (0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFn << bits)) + '/' + mask;
+    return cidr;
 }

@@ -39,11 +39,14 @@ acl.add( "2001:db8::" ); // expands to: 2001:db8:0:0:0:0:0:0/32
 acl.add( "::1" );        // expands to: 0:0:0:0:0:0:0:1/128
 ```
 
-IP ranges are also accepted.  Make sure they are separated by a dash (and zero or more spaces):
+Limited IP ranges are also accepted.  Make sure they are separated by a dash (with zero or more spaces), and that they can be represented accurately with one single CIDR block:
 
 ```js
 acl.add( "8.12.144.0 - 8.12.144.255" );
+acl.add( "2600:1f70:4000:300:0:0:0:0 - 2600:1f70:4000:3ff:ffff:ffff:ffff:ffff" );
 ```
+
+Complex ranges that require multiple CIDR blocks are not supported.
 
 ## Matching IP Addresses
 
